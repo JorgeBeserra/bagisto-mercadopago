@@ -1,0 +1,71 @@
+# Laravel
+/public/hot
+/public/storage
+/storage/*.key
+/storage/debugbar/*
+/vendor
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.env
+.phpunit.result.cache
+.env.backup
+
+# Vagrant
+/.vagrant
+
+# Dependencias
+/node_modules
+
+# IDEs and editors
+.idea
+.vscode
+.vs
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+.editorconfig
+._.DS_Store
+
+# Logs
+!logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misc
+.npm
+.eslintcache
+.yarn-integrity
+
+# System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Configuração de Pastas
+[Dd]esktop.ini
+
+# Atalhos do Windows
+*.lnk
+
+# Arquivos Temporarios
+*.*˜

@@ -1,0 +1,28 @@
+{
+    "name": "jorgebeserra/bagisto-mercadopago",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jorge Beserra",
+            "email": "jorgebeserra@sabidos.com.br"
+        }
+    ],
+    "require": {
+        "pagseguro/pagseguro-php-sdk": "^6.0",
+        "symfony/serializer": "^5.0",
+        "mercadopago/dx-php": "2.2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "JorgeBeserra\\MercadoPago\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JorgeBeserra\\MercadoPago\\Providers\\MercadopagoServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}
