@@ -20,7 +20,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "JorgeBeserra\\MercadoPago\\Providers\\MercadopagoServiceProvider"
+                "jorgebeserra\\MercadoPago\\Providers\\MercadopagoServiceProvider"
             ]
         }
     },

@@ -6,7 +6,7 @@
  * @author    Carlos Gartner <contato@carlosgartner.com.br>
  */
 
-namespace JorgeBeserra\Mercadopago\Helper;
+namespace jorgebeserra\Mercadopago\Helper;
 
 use JorgeBeserra\Mercadopago\Payment\MercadoPago;
 use Illuminate\Support\Facades\Log;

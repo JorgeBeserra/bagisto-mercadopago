@@ -1,12 +1,12 @@
 <?php
 
-namespace JorgeBeserra\Mercadopago\Providers;
+namespace jorgebeserra\Mercadopago\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
 /**
  * Class MercadopagoServiceProvider
- * @package JorgeBeserra\Mercadopago\Providers
+ * @package jorgebeserra\Mercadopago\Providers
  */
 class MercadopagoServiceProvider extends ServiceProvider
 {

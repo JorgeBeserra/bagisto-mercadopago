@@ -4,7 +4,7 @@ return [
         'code'              => 'mercadopago',
         'title'             => 'MercadoPago',
         'description'       => 'Pague sua compra com MercadoPago',
-        'class'             => \JorgeBeserra\Mercadopago\Payment\MercadoPago::class,
+        'class'             => \jorgebeserra\Mercadopago\Payment\MercadoPago::class,
         'active'            => true,
 //        'no_interest'       => 5,
         'type'              => 'redirect',
