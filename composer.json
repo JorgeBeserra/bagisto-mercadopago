@@ -14,13 +14,13 @@
     },
     "autoload": {
         "psr-4": {
-            "jorgebeserra\\MercadoPago\\": "src/"
+            "jorgebeserra\\Mercadopago\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "jorgebeserra\\MercadoPago\\Providers\\MercadopagoServiceProvider"
+                "jorgebeserra\\Mercadopago\\Providers\\MercadopagoServiceProvider"
             ]
         }
     },
