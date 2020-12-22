@@ -1,8 +1,8 @@
 <?php
 
-namespace JorgeBeserra\Mercadopago\Payment;
+namespace jorgebeserra\Mercadopago\Payment;
 
-use JorgeBeserra\Mercadopago\Helper\Helper;
+use jorgebeserra\Mercadopago\Helper\Helper;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;

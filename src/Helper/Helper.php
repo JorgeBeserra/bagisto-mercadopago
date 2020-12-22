@@ -18,7 +18,7 @@ use function core;
 
 /**
  * Class Helper
- * @package JorgeBeserra\Mercadopago\Helper
+ * @package jorgebeserra\Mercadopago\Helper
  */
 class Helper
 {

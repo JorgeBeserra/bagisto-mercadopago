@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16ab21a02ebf70c3150cef8bb223192f",
+    "content-hash": "59d7a4498e2c439a645103a74abbd4dc",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1088,12 +1088,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "4af81510bb603a6d255691a88e118add2bba6337"
+                "reference": "e76534dca5993bb2e8197257aa45768946483326"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/4af81510bb603a6d255691a88e118add2bba6337",
-                "reference": "4af81510bb603a6d255691a88e118add2bba6337",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/e76534dca5993bb2e8197257aa45768946483326",
+                "reference": "e76534dca5993bb2e8197257aa45768946483326",
                 "shasum": ""
             },
             "require": {
@@ -1166,7 +1166,7 @@
             "description": "Symfony Serializer Component",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v5.2.1"
+                "source": "https://github.com/symfony/serializer/tree/5.x"
             },
             "funding": [
                 {
@@ -1182,7 +1182,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-18T08:03:05+00:00"
+            "time": "2020-12-21T15:33:14+00:00"
         }
     ],
     "packages-dev": [],

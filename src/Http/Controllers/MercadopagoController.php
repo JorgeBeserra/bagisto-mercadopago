@@ -1,9 +1,9 @@
 <?php
 
-namespace JorgeBeserra\Mercadopago\Http\Controllers;
+namespace jorgebeserra\Mercadopago\Http\Controllers;
 
-use JorgeBeserra\Mercadopago\Helper\Helper;
-use JorgeBeserra\Mercadopago\Payment\MercadoPago;
+use jorgebeserra\Mercadopago\Helper\Helper;
+use jorgebeserra\Mercadopago\Payment\MercadoPago;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
