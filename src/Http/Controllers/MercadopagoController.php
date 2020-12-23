@@ -1,9 +1,9 @@
 <?php
 
-namespace jorgebeserra\Mercadopago\Http\Controllers;
+namespace Jorgebeserra\Mercadopago\Http\Controllers;
 
-use jorgebeserra\Mercadopago\Helper\Helper;
-use jorgebeserra\Mercadopago\Payment\MercadoPago;
+use Jorgebeserra\Mercadopago\Helper\Helper;
+use Jorgebeserra\Mercadopago\Payment\MercadoPago;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
@@ -21,7 +21,7 @@ use Webkul\Sales\Repositories\OrderRepository;
 
 /**
  * Class MercadopagoController
- * @package JorgeBeserra\Mercadopago\Http\Controllers
+ * @package Jorgebeserra\Mercadopago\Http\Controllers
  */
 class MercadopagoController extends Controller
 {

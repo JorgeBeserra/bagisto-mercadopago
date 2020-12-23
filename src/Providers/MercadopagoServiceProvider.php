@@ -1,6 +1,6 @@
 <?php
 
-namespace jorgebeserra\Mercadopago\Providers;
+namespace Jorgebeserra\Mercadopago\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

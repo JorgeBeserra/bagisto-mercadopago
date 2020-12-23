@@ -1,6 +1,6 @@
 <?php
 
-namespace jorgebeserra\Mercadopago\Http\Controllers;
+namespace Jorgebeserra\Mercadopago\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;

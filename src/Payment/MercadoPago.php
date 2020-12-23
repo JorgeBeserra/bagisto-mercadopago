@@ -1,8 +1,8 @@
 <?php
 
-namespace jorgebeserra\Mercadopago\Payment;
+namespace Jorgebeserra\Mercadopago\Payment;
 
-use jorgebeserra\Mercadopago\Helper\Helper;
+use Jorgebeserra\Mercadopago\Helper\Helper;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -20,7 +20,7 @@ use function core;
 
 /**
  * Class MercadoPago
- * @package JorgeBeserra\Mercadopago\Payment
+ * @package Jorgebeserra\Mercadopago\Payment
  */
 class MercadoPago extends Payment
 {

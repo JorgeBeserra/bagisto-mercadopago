@@ -2,7 +2,7 @@
 return [
     [
         'key' => 'sales.paymentmethods.mercadopago',
-        'name' => 'MercadoPago',
+        'name' => 'Mercadopago',
         'sort' => 100,
         'fields' => [
             [

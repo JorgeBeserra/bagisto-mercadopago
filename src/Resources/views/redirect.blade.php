@@ -1,5 +1,6 @@
 <?php
-use jorgebeserra\Mercadopago\Payment\MercadoPago;
+
+use Jorgebeserra\Mercadopago\Payment\MercadoPago;
 
 /** @var MercadoPago $mercadopago */
 $mercadopago = app(MercadoPago::class);

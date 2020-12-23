@@ -1,7 +1,7 @@
 <?php
 
 if ( ! defined( 'MERCADOPAGO_CONTROLER')) {
-    define('MERCADOPAGO_CONTROLER', 'jorgebeserra\Mercadopago\Http\Controllers\MercadopagoController@');
+    define('MERCADOPAGO_CONTROLER', 'Jorgebeserra\Mercadopago\Http\Controllers\MercadopagoController@');
 }
 
 Route::group(['middleware' => ['web']], function () {

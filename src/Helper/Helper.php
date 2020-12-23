@@ -6,7 +6,7 @@
  * @author    Carlos Gartner <contato@carlosgartner.com.br>
  */
 
-namespace jorgebeserra\Mercadopago\Helper;
+namespace Jorgebeserra\Mercadopago\Helper;
 
 use JorgeBeserra\Mercadopago\Payment\MercadoPago;
 use Illuminate\Support\Facades\Log;
@@ -18,14 +18,14 @@ use function core;
 
 /**
  * Class Helper
- * @package jorgebeserra\Mercadopago\Helper
+ * @package Jorgebeserra\Mercadopago\Helper
  */
 class Helper
 {
     /**
      *
      */
-    const MODULE_VERSION = '1.0.1';
+    const MODULE_VERSION = '1.0.0';
 
     /**
      *
