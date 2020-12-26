@@ -2,7 +2,7 @@
 return [
     [
         'key' => 'sales.paymentmethods.mercadopago',
-        'name' => 'Mercadopago',
+        'name' => 'Mercado Pago',
         'sort' => 100,
         'fields' => [
             [
@@ -39,12 +39,18 @@ return [
                 'validation' => 'required',
                 'info' => 'Endereço de email utilizado na conta do MercadoPago'
             ],[
-                'name' => 'token',
-                'title' => 'Token de Integração',
+                'name' => 'public_token',
+                'title' => 'Public Token de Integração',
                 'type' => 'text',
                 'validation' => 'required',
-                'info' => 'Token gerado na sua conta MercadoPago, para descobrir como pegar seu Token acesse esse link: https://www.mercadopago.com.br/developers/panel/credentials'
-            ], [
+                'info' => 'Public Token gerado na sua conta MercadoPago, para descobrir como pegar seu Token acesse esse link: https://www.mercadopago.com.br/developers/panel/credentials'
+            ],[
+                'name' => 'access_token',
+                'title' => 'Access Token de Integração',
+                'type' => 'text',
+                'validation' => 'required',
+                'info' => 'Access Token gerado na sua conta MercadoPago, para descobrir como pegar seu Token acesse esse link: https://www.mercadopago.com.br/developers/panel/credentials'
+            ],[
                 'name' => 'sandbox',
                 'title' => 'admin::app.admin.system.sandbox',
                 'type' => 'boolean',

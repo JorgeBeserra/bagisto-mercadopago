@@ -14,6 +14,7 @@ use PagSeguro\Library;
 use PagSeguro\Services\Session;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Webkul\Checkout\Models\Cart;
+use Webkul\Checkout\Facades\Cart as WorldCart;
 use Webkul\Checkout\Models\CartAddress;
 use Webkul\Payment\Payment\Payment;
 use function core;
@@ -64,7 +65,7 @@ class MercadoPago extends Payment
      */
     protected $sessionCode;
     /**
-     * @var \MercadoPago\Domains\Requests\Payment
+     * @var \MercadoPago\Payment
      */
     protected $payment;
     /**
@@ -87,6 +88,30 @@ class MercadoPago extends Payment
      * @var
      */
     protected $token;
+    /**
+     * @var
+     */
+    protected $public_token;
+    /**
+     * @var
+     */
+    protected $access_token;
+    /**
+     * @var
+     */
+    protected $customer;
+    /**
+     * @var
+     */
+    protected $prefence;
+    /**
+     * @var
+     */
+    protected $payer;
+       /**
+     * @var
+     */
+    protected $shipments;
 
     /**
      * MercadoPago constructor.
@@ -95,7 +120,9 @@ class MercadoPago extends Payment
     {
         $this->email = core()->getConfigData(self::CONFIG_EMAIL_ADDRES);
         $this->token = core()->getConfigData(self::CONFIG_TOKEN);
-
+        $this->public_token = core()->getConfigData('sales.paymentmethods.mercadopago.public_token');
+        $this->access_token = core()->getConfigData('sales.paymentmethods.mercadopago.access_token');
+        
         if (core()->getConfigData(self::CONFIG_SANDBOX)) {
             $this->sandbox = true;
             $this->environment = 'sandbox';
@@ -121,17 +148,36 @@ class MercadoPago extends Payment
         Configure::setCharset('UTF-8');
         Configure::setEnvironment($this->environment);
 
+        $mp = new \MercadoPago\SDK();
+        
+        $mp::setAccessToken($this->access_token);
+        $mp::setPublicKey($this->public_token);
+
         /** @var Cart $cart */
         $cart = $this->getCart();
-
-        $this->payment = new \MercadoPago\Domains\Requests\Payment();
+        $this->customer = WorldCart::getCurrentCustomer()->user();
+                
+        $this->payment = new \MercadoPago\Payment();
+        $this->preference = new \MercadoPago\Preference();
+        $this->payer = new \MercadoPago\Payer();
+        $this->shipments = new \MercadoPago\Shipments();
+        
+        $this->preference->external_reference = $cart->id;
         $this->configurePayment($cart);
         $this->addItems();
         $this->addCustomer($cart);
         $this->addShipping($cart);
-
+        $this->preference->back_urls = array(
+            "failure" => route('mercadopago.cancel'),
+            "pending" => route('mercadopago.success'),
+            "success" => route('mercadopago.success'),
+        );        
+        $this->preference->notification_url = route('mercadopago.notify');
+        
+        $this->preference->auto_return = 'approved';
+        
         try {
-            $this->sessionCode = Session::create(Configure::getAccountCredentials());
+            $this->preference->save();
         } catch (Exception $e) {
             throw new Exception('Mercadopago: ' . $e->getMessage());
         }
@@ -142,28 +188,30 @@ class MercadoPago extends Payment
      */
     public function configurePayment(Cart $cart)
     {
-        $this->payment->setCurrency('BRL');
-        $this->payment->setReference($cart->id);
-        $this->payment->setRedirectUrl(route('mercadopago.success'));
-        $this->payment->setNotificationUrl(route('mercadopago.notify'));
-
-//        //Add installments with no interest
-//        if ($maxInstallments = core()->getConfigData(self::CONFIG_MAX_INSTALLMENTS)) {
-//            $this->payment->addPaymentMethod()->withParameters(
-//                Group::CREDIT_CARD,
-//                Keys::MAX_INSTALLMENTS_LIMIT,
-//                (int) $maxInstallments // (int) qty of installment
-//            );
-//        }
-//
-//        // Limit the max installments
-//        if ($installmentsNoInterest = core()->getConfigData(self::CONFIG_NO_INTEREST)) {
-//            $this->payment->addPaymentMethod()->withParameters(
-//                Group::CREDIT_CARD,
-//                Keys::MAX_INSTALLMENTS_NO_INTEREST,
-//                (int) $installmentsNoInterest // (int) qty of installment
-//            );
-//        }
+        // $this->payment->setCurrency('BRL'); Procurar Como mudar para o REAL
+        //$this->payment->setReference($cart->id);
+        //$this->payment->setRedirectUrl(route('mercadopago.success'));
+        //$this->payment->setNotificationUrl(route('mercadopago.notify'));
+        
+        //$this->preference->payment_methods->installments = 1;
+        
+        //        //Add installments with no interest
+        //        if ($maxInstallments = core()->getConfigData(self::CONFIG_MAX_INSTALLMENTS)) {
+        //            $this->payment->addPaymentMethod()->withParameters(
+        //                Group::CREDIT_CARD,
+        //                Keys::MAX_INSTALLMENTS_LIMIT,
+        //                (int) $maxInstallments // (int) qty of installment
+        //            );
+        //        }
+        //
+        //        // Limit the max installments
+        //        if ($installmentsNoInterest = core()->getConfigData(self::CONFIG_NO_INTEREST)) {
+        //            $this->payment->addPaymentMethod()->withParameters(
+        //                Group::CREDIT_CARD,
+        //                Keys::MAX_INSTALLMENTS_NO_INTEREST,
+        //                (int) $installmentsNoInterest // (int) qty of installment
+        //            );
+        //        }
     }
 
     /**
@@ -176,14 +224,19 @@ class MercadoPago extends Payment
          */
         $items = $this->getCartItems();
 
+        $arrayItem = array();
+        
         foreach ($items as $cartItem) {
-            $this->payment->addItems()->withParameters(
-                $cartItem->product_id,
-                $cartItem->name,
-                $cartItem->quantity,
-                $cartItem->price
-            );
+            $item = new \MercadoPago\Item();
+            $item->id = $cartItem->sku;
+            $item->description = $cartItem->name;
+            $item->title = $cartItem->name;
+            $item->quantity = $cartItem->quantity;
+            $item->unit_price = $cartItem->price;
+            array_push($arrayItem, $item);
         }
+
+        $this->preference->items = $arrayItem;
     }
 
     /**
@@ -193,8 +246,54 @@ class MercadoPago extends Payment
     public function addCustomer(Cart $cart)
     {
         $fullname = $this->fullnameConversion($cart->customer_first_name . ' ' . $cart->customer_last_name);
-        $this->payment->setSender()->setName($fullname);
-        $this->payment->setSender()->setEmail($cart->customer_email);
+
+        $billingAddress = $cart->getBillingAddressAttribute();
+
+        // Add telephone
+        $telephone = Helper::phoneParser($billingAddress->phone);
+
+        if ($telephone) {
+            $this->payer->phone = array(
+                "area_code" => $telephone['ddd'],
+                "number" => $telephone['number']
+            );
+        }
+
+        // Add CPF
+        if ($this->customer->person_type == 'person') {
+            $this->payer->identification = array(
+                "type" => "CPF",
+                "number" => Helper::justNumber($this->customer->document)
+              );
+        }else{
+            $this->payer->identification = array(
+                "type" => "CNPJ",
+                "number" => Helper::justNumber($this->customer->document)
+              );
+        }
+        
+        // Add Address Payer
+        $addresses = explode(PHP_EOL, $billingAddress->address1);
+        $address_0 = isset($addresses[0]) ? $addresses[0] : null;
+        $address_1 = isset($addresses[1]) ? $addresses[1] : null;
+        $address = $address_0 . $address_1;
+        $address = explode(',', $address);
+        $street_name = $address[0];
+        $street_number = $address[1];
+
+        $this->payer->address = array(
+            "street_name" => $street_name,
+            "street_number" => (int)$street_number,
+            "zip_code" => $billingAddress->postcode
+        );
+        
+        $this->payer->name = $fullname;
+        $this->payer->surname = $cart->customer_last_name;
+        $this->payer->first_name = $cart->customer_first_name;
+        $this->payer->last_name = $cart->customer_last_name;
+        $this->payer->email = $cart->customer_email;
+        $this->preference->payer = $this->payer;
+
     }
 
     /**
@@ -207,28 +306,11 @@ class MercadoPago extends Payment
          */
         $billingAddress = $cart->getBillingAddressAttribute();
 
-        // Add telephone
-        $telephone = Helper::phoneParser($billingAddress->phone);
-
-        if ($telephone) {
-            $this->payment->setSender()->setPhone()->withParameters(
-                $telephone['ddd'],
-                $telephone['number']
-            );
-        }
-
-        // Add CPF
-        if ($billingAddress->vat_id) {
-            $this->payment->setSender()->setDocument()->withParameters(
-                'CPF',
-                Helper::justNumber($billingAddress->vat_id)
-            );
-        }
-
         if ($cart->selected_shipping_rate) {
             $addresses = explode(PHP_EOL, $billingAddress->address1);
 
             // Add address
+            /*
             $this->payment->setShipping()->setAddress()->withParameters(
                 isset($addresses[0]) ? $addresses[0] : null,
                 isset($addresses[1]) ? $addresses[1] : null,
@@ -239,9 +321,11 @@ class MercadoPago extends Payment
                 $billingAddress->country,
                 isset($addresses[3]) ? $addresses[3] : null
             );
+            */
+            
+            // Add Shipping Method           
+            $this->shipments->cost = (float)$cart->selected_shipping_rate->price;
 
-            // Add Shipping Method
-            $this->payment->setShipping()->setCost()->withParameters($cart->selected_shipping_rate->price);
             if (Str::contains($cart->selected_shipping_rate->carrier, 'correio')) {
                 if (Str::contains($cart->selected_shipping_rate->method, 'sedex')) {
                     $this->payment->setShipping()->setType()->withParameters(Type::SEDEX);
@@ -250,9 +334,10 @@ class MercadoPago extends Payment
                     $this->payment->setShipping()->setType()->withParameters(Type::PAC);
                 }
             } else {
-                $this->payment->setShipping()->setType()->withParameters(Type::NOT_SPECIFIED);
+                $this->shipments->cost = (float)$cart->selected_shipping_rate->price;
             }
-        }
+        }   
+        $this->preference->shipments = $this->shipments;
     }
 
     /**
@@ -261,10 +346,12 @@ class MercadoPago extends Payment
      */
     public function send()
     {
+        /*
         return $this->payment->register(
             Configure::getAccountCredentials(),
             true
         );
+        */
     }
 
     /**
@@ -303,6 +390,7 @@ class MercadoPago extends Payment
             'boletos' => 'https://ws.mercadopago.uol.com.br/recurring-payment/boletos',
             'redirect' => 'https://' . $env . 'mercadopago.uol.com.br/v2/checkout/payment.html?code=',
         ];
+        
     }
 
     /**
@@ -310,7 +398,23 @@ class MercadoPago extends Payment
      */
     public function getJavascriptUrl()
     {
-        return core()->getConfigData(self::CONFIG_TYPE) == 'lightbox' ? $this->urls['lightbox'] : $this->urls['javascript'];
+        return 'https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js';      
+    }
+
+     /**
+     * @return mixed
+     */
+    public function getPreferenceId()
+    {
+        return $this->preference->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getinitPointId()
+    {
+        return $this->preference->init_point;
     }
 
     /**

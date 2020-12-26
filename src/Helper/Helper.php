@@ -4,6 +4,7 @@
  *
  * @copyright Copyright © 2020 Redstage. All rights reserved.
  * @author    Carlos Gartner <contato@carlosgartner.com.br>
+ * @author    Jorge Beserra <jorgebeserra@gmail.com> (MercadoPago)
  */
 
 namespace Jorgebeserra\Mercadopago\Helper;

@@ -7,6 +7,7 @@ $mercadopago = app(MercadoPago::class);
 $mercadopago->init();
 $response = $mercadopago->send();
 ?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,27 +16,15 @@ $response = $mercadopago->send();
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Pagamento MercadoPago</title>
-    <script type="text/javascript" src="{{ $mercadopago->getJavascriptUrl() }}"></script>
+    <script src="{{ $mercadopago->getJavascriptUrl() }}" data-preference-id="{{ $mercadopago->getPreferenceId() }}"></script>
 </head>
 <body>
-<script type="text/javascript">
-    var code = '<?= $response->getCode() ?>'
-    @if(core()->getConfigData(MercadoPago::CONFIG_TYPE) === 'lightbox')
-        var callback = {
-            success : function(transactionCode) {
-                window.location.href = '<?= route('mercadopago.success') ?>?transactionCode=' + transactionCode;
-            },
-            abort : function() {
-                window.location.href = '<?= route('mercadopago.cancel') ?>';
-            }
-        };
-        var isOpenLightbox = PagSeguroLightbox(code, callback);
-        if (!isOpenLightbox){
-            location.href= '<?= $mercadopago->getPagseguroUrl() ?>' + code;
-        }
-    @else
-        location.href= '<?= $mercadopago->getPagseguroUrl() ?>' + code;
-    @endif
-</script>
+    Você será redirecionado para o Mercado Pago em poucos segundos.<br><br>
+    <form action="{{ $mercadopago->getinitPointId() }}" id="mercadopago_standard_checkout" method="POST">
+        <input value="Clique aqui se não foi redirecionado em 10 segundos ..." type="submit">
+    </form>
+    <script type="text/javascript">
+        document.getElementById("mercadopago_standard_checkout").submit();
+    </script>
 </body>
 </html>

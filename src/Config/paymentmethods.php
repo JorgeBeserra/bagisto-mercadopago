@@ -2,7 +2,7 @@
 return [
     'mercadopago'  => [
         'code'              => 'mercadopago',
-        'title'             => 'MercadoPago',
+        'title'             => 'Mercado Pago',
         'description'       => 'Pague sua compra com MercadoPago',
         'class'             => \Jorgebeserra\Mercadopago\Payment\MercadoPago::class,
         'active'            => true,
