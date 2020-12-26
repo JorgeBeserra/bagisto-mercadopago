@@ -140,7 +140,7 @@ class MercadoPago extends Payment
         Library::cmsVersion()->setName("Bagisto")->setRelease(Helper::MODULE_VERSION);
         Library::moduleVersion()->setName("Bagisto")->setRelease(Helper::MODULE_VERSION);
 
-        if (!$this->access_token || !$$this->access_token) {
+        if (!$this->access_token || !$this->access_token) {
             throw new Exception('Mercadopago: To use this payment method you need to inform the token and email account of Mercadopago account.');
         }
 
