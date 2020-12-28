@@ -8,7 +8,6 @@
         }
     ],
     "require": {
-        "pagseguro/pagseguro-php-sdk": "^6.0",
         "symfony/serializer": "^5.0",
         "mercadopago/dx-php": "2.2.1"
     },
