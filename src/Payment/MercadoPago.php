@@ -6,12 +6,6 @@ use Jorgebeserra\Mercadopago\Helper\Helper;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use PagSeguro\Configuration\Configure;
-use PagSeguro\Enum\PaymentMethod\Config\Keys;
-use PagSeguro\Enum\PaymentMethod\Group;
-use PagSeguro\Enum\Shipping\Type;
-use PagSeguro\Library;
-use PagSeguro\Services\Session;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Webkul\Checkout\Models\Cart;
 use Webkul\Checkout\Facades\Cart as WorldCart;
@@ -136,17 +130,17 @@ class MercadoPago extends Payment
      */
     public function init()
     {
-        Library::initialize();
-        Library::cmsVersion()->setName("Bagisto")->setRelease(Helper::MODULE_VERSION);
-        Library::moduleVersion()->setName("Bagisto")->setRelease(Helper::MODULE_VERSION);
+        //Library::initialize();
+        //Library::cmsVersion()->setName("Bagisto")->setRelease(Helper::MODULE_VERSION);
+        //Library::moduleVersion()->setName("Bagisto")->setRelease(Helper::MODULE_VERSION);
 
         if (!$this->access_token || !$this->access_token) {
             throw new Exception('Mercadopago: To use this payment method you need to inform the token and email account of Mercadopago account.');
         }
 
-        Configure::setAccountCredentials($this->email, $this->token);
-        Configure::setCharset('UTF-8');
-        Configure::setEnvironment($this->environment);
+        //Configure::setAccountCredentials($this->email, $this->token);
+        //Configure::setCharset('UTF-8');
+        //Configure::setEnvironment($this->environment);
 
         $mp = new \MercadoPago\SDK();
         
